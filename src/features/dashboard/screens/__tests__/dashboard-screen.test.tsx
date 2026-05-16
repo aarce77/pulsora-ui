@@ -16,7 +16,8 @@ describe("DashboardScreen", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.getByText("Pulsora foundation")).toBeOnTheScreen();
-    expect(screen.getByText(/API Base URL/i)).toBeOnTheScreen();
+    expect(screen.getByText("Pulsora dashboard")).toBeOnTheScreen();
+    expect(screen.getByText("AI Signal Overview")).toBeOnTheScreen();
+    expect(screen.getByText("Regime & Outlook")).toBeOnTheScreen();
   });
 });
