@@ -95,7 +95,7 @@ export function RegimeOutlookCard({ regime }: RegimeOutlookCardProps) {
 
       <View
         style={{
-          alignItems: "center",
+          alignItems: "flex-start",
           backgroundColor: withAlpha(theme.colors.success, "14"),
           borderRadius: theme.radius.md,
           flexDirection: "row",
@@ -104,15 +104,23 @@ export function RegimeOutlookCard({ regime }: RegimeOutlookCardProps) {
           padding: theme.spacing.md,
         }}
       >
-        <View>
+        <View style={{ flex: 1, flexShrink: 1, paddingRight: theme.spacing.md }}>
           <Text style={{ color: theme.colors.success, fontSize: theme.typography.body, fontWeight: "700" }}>
             {regime.forwardView.title}
           </Text>
-          <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.bodySmall }}>
+          <Text
+            style={{
+              color: theme.colors.textSecondary,
+              flexWrap: "wrap",
+              fontSize: theme.typography.bodySmall,
+            }}
+          >
             {regime.forwardView.subtitle}
           </Text>
         </View>
-        <ArrowUpRight color={theme.colors.success} size={20} />
+        <View style={{ paddingTop: 2 }}>
+          <ArrowUpRight color={theme.colors.success} size={20} />
+        </View>
       </View>
     </Card>
   );
