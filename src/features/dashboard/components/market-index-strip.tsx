@@ -3,31 +3,43 @@ import { Text, View } from "react-native";
 import { Card } from "@/components/ui/card";
 import { DashboardMock } from "@/features/dashboard/data/dashboard-mock";
 import { Sparkline } from "@/features/dashboard/components/sparkline";
+import { getMarketTileWidth } from "@/features/dashboard/utils/dashboard-layout";
 import { useTheme } from "@/theme";
 import { getToneColor } from "@/features/dashboard/utils/dashboard-colors";
 
 type MarketIndexStripProps = {
   indices: DashboardMock["indices"];
-  isDesktop: boolean;
+  columns: number;
+  viewportWidth: number;
 };
 
-export function MarketIndexStrip({ indices, isDesktop }: MarketIndexStripProps) {
+export function MarketIndexStrip({
+  indices,
+  columns,
+  viewportWidth,
+}: MarketIndexStripProps) {
   const { theme } = useTheme();
+  const tileWidth = getMarketTileWidth(
+    viewportWidth,
+    columns,
+    theme.spacing.lg,
+    theme.spacing.md,
+  );
 
   return (
     <View
       style={{
         flexDirection: "row",
-        flexWrap: isDesktop ? "nowrap" : "wrap",
+        flexWrap: "wrap",
         gap: theme.spacing.md,
+        justifyContent: columns === 1 ? "flex-start" : "space-between",
       }}
     >
       {indices.map((index) => (
         <Card
           key={index.name}
           style={{
-            flex: isDesktop ? 1 : undefined,
-            minWidth: isDesktop ? 0 : "47%",
+            width: tileWidth,
             padding: theme.spacing.md,
           }}
         >
