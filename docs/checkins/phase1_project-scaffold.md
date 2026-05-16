@@ -1,7 +1,7 @@
 # phase1/project-scaffold
 
 **Date:** 2026-05-15
-**Author:** Codex
+**Author:** Angel Arce
 
 ## Summary
 Phase 1 establishes the foundational React Native + Expo architecture for Pulsora. This includes the app scaffold, Expo Router navigation shell, token-based light and dark theming, persisted auth state, the Markov Trader API client boundary, and a baseline testing/tooling setup for future feature implementation.
