@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Pulsora",
+    "slug": "pulsora-ui",
+    "scheme": "pulsora",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router"
+    ],
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
