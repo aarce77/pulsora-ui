@@ -8,6 +8,7 @@ import { RegimeOutlookCard } from "@/features/dashboard/components/regime-outloo
 import { SignalDetailsCard } from "@/features/dashboard/components/signal-details-card";
 import { SignalOverviewCard } from "@/features/dashboard/components/signal-overview-card";
 import { dashboardMock } from "@/features/dashboard/data/dashboard-mock";
+import { getMarketTileColumns } from "@/features/dashboard/utils/dashboard-layout";
 import { useTheme } from "@/theme";
 
 export function DashboardGrid() {
@@ -15,11 +16,16 @@ export function DashboardGrid() {
   const { theme } = useTheme();
   const isDesktop = width >= 1180;
   const isTablet = width >= 760;
+  const marketTileColumns = getMarketTileColumns(width);
 
   return (
     <View style={{ gap: theme.spacing.lg }}>
       <DashboardHeader title={dashboardMock.greeting} isDesktop={isDesktop} />
-      <MarketIndexStrip indices={dashboardMock.indices} isDesktop={isDesktop} />
+      <MarketIndexStrip
+        indices={dashboardMock.indices}
+        columns={marketTileColumns}
+        viewportWidth={width}
+      />
 
       {isDesktop ? (
         <View style={{ flexDirection: "row", gap: theme.spacing.md }}>
