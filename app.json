@@ -8,9 +8,6 @@
     "plugins": [
       "expo-router"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "web": {
       "bundler": "metro"
     }

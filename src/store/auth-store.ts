@@ -1,7 +1,6 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-
 import { appStorage } from "@/store/storage";
+import { createJSONStorage, persist } from "@/vendor/zustand-middleware";
+import { create } from "@/vendor/zustand";
 
 export type AuthSession = {
   accessToken: string;

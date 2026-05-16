@@ -1,9 +1,8 @@
 import { Appearance } from "react-native";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-
 import { appStorage } from "@/store/storage";
 import { ColorScheme } from "@/theme/types";
+import { createJSONStorage, persist } from "@/vendor/zustand-middleware";
+import { create } from "@/vendor/zustand";
 
 type ThemePreference = "system" | ColorScheme;
 

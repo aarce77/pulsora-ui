@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from "react-native";
-import { StateStorage } from "zustand/middleware";
+import { StateStorage } from "@/vendor/zustand-middleware";
 
 const memoryStorage = new Map<string, string>();
 

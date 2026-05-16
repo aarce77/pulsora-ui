@@ -3,9 +3,17 @@ module.exports = function (api) {
   const isTest = process.env.NODE_ENV === "test";
 
   return {
-    presets: ["babel-preset-expo"],
-    plugins: isTest
-      ? []
-      : ["expo-router/babel", "nativewind/babel", "react-native-reanimated/plugin"],
+    presets: [
+      [
+        "babel-preset-expo",
+        {
+          web: {
+            unstable_transformImportMeta: true,
+          },
+        },
+      ],
+      "nativewind/babel",
+    ],
+    plugins: isTest ? [] : ["react-native-reanimated/plugin"],
   };
 };
