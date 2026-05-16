@@ -1,5 +1,6 @@
+import { useRouter } from "expo-router";
 import { ArrowLeft, Bookmark, Share2 } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { StatusPill } from "@/components/ui/status-pill";
 import { useTheme } from "@/theme";
@@ -16,6 +17,7 @@ export function SignalDetailHeader({
   updatedAt,
 }: SignalDetailHeaderProps) {
   const { theme } = useTheme();
+  const router = useRouter();
 
   return (
     <View style={{ gap: theme.spacing.md }}>
@@ -56,7 +58,22 @@ export function SignalDetailHeader({
         </View>
 
         <View style={{ flexDirection: "row", gap: theme.spacing.sm }}>
-          {[ArrowLeft, Bookmark, Share2].map((Icon, index) => (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Back to Signals"
+            onPress={() => router.push("/signals")}
+            style={{
+              alignItems: "center",
+              backgroundColor: theme.colors.surfaceMuted,
+              borderRadius: theme.radius.pill,
+              height: 40,
+              justifyContent: "center",
+              width: 40,
+            }}
+          >
+            <ArrowLeft color={theme.colors.textSecondary} size={18} />
+          </Pressable>
+          {[Bookmark, Share2].map((Icon, index) => (
             <View
               key={index}
               style={{

@@ -5,8 +5,7 @@ import { SignalOverviewCard } from "@/features/dashboard/components/signal-overv
 import { DriversCard } from "@/features/dashboard/components/drivers-card";
 import { RegimeOutlookCard } from "@/features/dashboard/components/regime-outlook-card";
 import {
-  signalDetailMeta,
-  signalDetailMock,
+  getSignalDetailScenario,
 } from "@/features/signal-detail/data/signal-detail-mock";
 import {
   toDrivers,
@@ -30,12 +29,9 @@ export function SignalDetailGrid({
   const isDesktop = width >= 1180;
   const isTablet = width >= 760;
 
-  const signal = {
-    ...signalDetailMock,
-    ticker: tickerOverride?.toUpperCase() ?? signalDetailMock.ticker,
-  };
+  const { signal, meta } = getSignalDetailScenario(tickerOverride);
 
-  const summary = toSignalSummary(signal, signalDetailMeta);
+  const summary = toSignalSummary(signal, meta);
   const details = toSignalDetails(signal);
   const drivers = toDrivers(signal);
   const regime = toRegime(signal);
@@ -44,8 +40,8 @@ export function SignalDetailGrid({
     <View style={{ gap: theme.spacing.lg }}>
       <SignalDetailHeader
         ticker={signal.ticker}
-        company={signalDetailMeta.company}
-        updatedAt={signalDetailMeta.updatedAt}
+        company={meta.company}
+        updatedAt={meta.updatedAt}
       />
 
       <Card>

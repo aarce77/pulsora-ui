@@ -1,0 +1,146 @@
+import { z } from "zod";
+
+const signalListItemSchema = z.object({
+  ticker: z.string(),
+  company: z.string(),
+  signal: z.enum(["BUY", "HOLD", "SELL"]),
+  confidenceScore: z.number().int().min(0).max(100),
+  confidenceLabel: z.string(),
+  expectedMove: z.string(),
+  regime: z.string(),
+  updatedAt: z.string(),
+  chart: z.array(
+    z.object({
+      label: z.string(),
+      value: z.number(),
+    }),
+  ),
+});
+
+const signalsMockSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  filters: z.array(z.string()),
+  selectedFilter: z.string(),
+  items: z.array(signalListItemSchema),
+});
+
+export type SignalsMock = z.infer<typeof signalsMockSchema>;
+
+export const signalsMock: SignalsMock = signalsMockSchema.parse({
+  title: "Signals",
+  subtitle:
+    "Browse explainable trade setups with confidence, expected move, and current regime context.",
+  filters: ["All", "High Confidence", "Bullish", "Watchlist"],
+  selectedFilter: "High Confidence",
+  items: [
+    {
+      ticker: "AAPL",
+      company: "Apple Inc.",
+      signal: "BUY",
+      confidenceScore: 78,
+      confidenceLabel: "High confidence",
+      expectedMove: "+2.81%",
+      regime: "Bull trend",
+      updatedAt: "Updated 2m ago",
+      chart: [
+        { label: "D1", value: 24 },
+        { label: "D2", value: 27 },
+        { label: "D3", value: 29 },
+        { label: "D4", value: 33 },
+        { label: "D5", value: 37 },
+        { label: "D6", value: 39 },
+      ],
+    },
+    {
+      ticker: "MSFT",
+      company: "Microsoft Corp.",
+      signal: "BUY",
+      confidenceScore: 74,
+      confidenceLabel: "High confidence",
+      expectedMove: "+2.14%",
+      regime: "Bull trend",
+      updatedAt: "Updated 4m ago",
+      chart: [
+        { label: "D1", value: 22 },
+        { label: "D2", value: 24 },
+        { label: "D3", value: 26 },
+        { label: "D4", value: 25 },
+        { label: "D5", value: 30 },
+        { label: "D6", value: 34 },
+      ],
+    },
+    {
+      ticker: "NVDA",
+      company: "NVIDIA Corp.",
+      signal: "BUY",
+      confidenceScore: 82,
+      confidenceLabel: "Very strong",
+      expectedMove: "+3.42%",
+      regime: "Bull trend",
+      updatedAt: "Updated 1m ago",
+      chart: [
+        { label: "D1", value: 25 },
+        { label: "D2", value: 31 },
+        { label: "D3", value: 35 },
+        { label: "D4", value: 39 },
+        { label: "D5", value: 43 },
+        { label: "D6", value: 48 },
+      ],
+    },
+    {
+      ticker: "TSLA",
+      company: "Tesla, Inc.",
+      signal: "HOLD",
+      confidenceScore: 58,
+      confidenceLabel: "Neutral bias",
+      expectedMove: "+0.62%",
+      regime: "Sideways",
+      updatedAt: "Updated 7m ago",
+      chart: [
+        { label: "D1", value: 32 },
+        { label: "D2", value: 31 },
+        { label: "D3", value: 29 },
+        { label: "D4", value: 30 },
+        { label: "D5", value: 28 },
+        { label: "D6", value: 27 },
+      ],
+    },
+    {
+      ticker: "AMZN",
+      company: "Amazon.com Inc.",
+      signal: "BUY",
+      confidenceScore: 68,
+      confidenceLabel: "Constructive",
+      expectedMove: "+1.46%",
+      regime: "Bull trend",
+      updatedAt: "Updated 5m ago",
+      chart: [
+        { label: "D1", value: 21 },
+        { label: "D2", value: 22 },
+        { label: "D3", value: 25 },
+        { label: "D4", value: 26 },
+        { label: "D5", value: 30 },
+        { label: "D6", value: 33 },
+      ],
+    },
+    {
+      ticker: "META",
+      company: "Meta Platforms",
+      signal: "BUY",
+      confidenceScore: 71,
+      confidenceLabel: "High confidence",
+      expectedMove: "+1.88%",
+      regime: "Bull trend",
+      updatedAt: "Updated 3m ago",
+      chart: [
+        { label: "D1", value: 18 },
+        { label: "D2", value: 20 },
+        { label: "D3", value: 24 },
+        { label: "D4", value: 27 },
+        { label: "D5", value: 29 },
+        { label: "D6", value: 32 },
+      ],
+    },
+  ],
+});
