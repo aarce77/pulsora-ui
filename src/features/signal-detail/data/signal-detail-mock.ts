@@ -610,16 +610,33 @@ const signalDetailScenarios: Record<string, SignalDetailScenario> = {
 export const signalDetailMock = signalDetailScenarios.AAPL.signal;
 export const signalDetailMeta = signalDetailScenarios.AAPL.meta;
 
-export function getSignalDetailScenario(ticker?: string): SignalDetailScenario {
+function isKnownSignalDetailTicker(ticker: string) {
+  return (
+    Boolean(signalDetailScenarios[ticker]) ||
+    signalsMock.items.some((item) => item.ticker === ticker) ||
+    watchlistMock.items.some((item) => item.ticker === ticker) ||
+    watchlistMock.searchResults.some((item) => item.ticker === ticker)
+  );
+}
+
+export function resolveSignalDetailScenario(ticker?: string): SignalDetailScenario | null {
   const normalizedTicker = ticker?.toUpperCase();
 
   if (normalizedTicker && signalDetailScenarios[normalizedTicker]) {
     return signalDetailScenarios[normalizedTicker];
   }
 
-  if (normalizedTicker) {
+  if (normalizedTicker && isKnownSignalDetailTicker(normalizedTicker)) {
     return buildFallbackScenario(normalizedTicker);
   }
 
+  if (normalizedTicker) {
+    return null;
+  }
+
   return signalDetailScenarios.AAPL;
+}
+
+export function getSignalDetailScenario(ticker?: string): SignalDetailScenario {
+  return resolveSignalDetailScenario(ticker) ?? signalDetailScenarios.AAPL;
 }
