@@ -42,6 +42,39 @@ describe("WatchlistScreen", () => {
     expect(screen.queryByText("Crypto")).not.toBeOnTheScreen();
   });
 
+  it("renders a loading state for Home", () => {
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <WatchlistScreen stateOverride="loading" />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText("Loading Home")).toBeOnTheScreen();
+    expect(screen.queryByText("AAPL")).not.toBeOnTheScreen();
+  });
+
+  it("renders a retryable error state for Home", () => {
+    const queryClient = new QueryClient();
+    const onRetry = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <WatchlistScreen stateOverride="error" onRetry={onRetry} />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.press(screen.getByLabelText("Retry Home"));
+
+    expect(screen.getByText("Home unavailable")).toBeOnTheScreen();
+    expect(onRetry).toHaveBeenCalled();
+  });
+
   it("filters watchlist rows from the local search input", () => {
     const queryClient = new QueryClient();
 

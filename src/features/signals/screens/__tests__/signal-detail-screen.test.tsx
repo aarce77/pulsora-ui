@@ -44,6 +44,39 @@ describe("SignalDetailScreen", () => {
     expect(screen.getByText("Indicator Contributions")).toBeOnTheScreen();
   });
 
+  it("renders a loading state for signal detail", () => {
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen stateOverride="loading" />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText("Loading signal detail")).toBeOnTheScreen();
+    expect(screen.queryByText("Indicator Contributions")).not.toBeOnTheScreen();
+  });
+
+  it("renders a retryable error state for signal detail", () => {
+    const queryClient = new QueryClient();
+    const onRetry = jest.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen stateOverride="error" onRetry={onRetry} />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.press(screen.getByLabelText("Retry signal detail"));
+
+    expect(screen.getByText("Signal detail unavailable")).toBeOnTheScreen();
+    expect(onRetry).toHaveBeenCalled();
+  });
+
   it("renders the selected non-AAPL ticker instead of falling back to AAPL", () => {
     mockUseLocalSearchParams.mockReturnValue({ ticker: "msft" });
     const queryClient = new QueryClient();
@@ -76,6 +109,21 @@ describe("SignalDetailScreen", () => {
     expect(screen.getAllByText("GOOGL").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Alphabet Inc.").length).toBeGreaterThan(0);
     expect(screen.queryByText("Apple Inc.")).not.toBeOnTheScreen();
+  });
+
+  it("renders a not-found state for unknown tickers", () => {
+    mockUseLocalSearchParams.mockReturnValue({ ticker: "xxxx" });
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText("Ticker not found")).toBeOnTheScreen();
   });
 
   it("updates the selected timeframe and chart label locally", () => {

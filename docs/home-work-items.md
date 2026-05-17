@@ -25,6 +25,7 @@ Status: complete
 4. Loading, empty, and error UI
 - Add loading, error, retry, and not-found states for Home
 - Add loading, error, retry, and not-found states for Signal Detail
+Status: complete
 
 5. Settings expansion
 - Add more presentation-only preferences
