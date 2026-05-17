@@ -1,5 +1,6 @@
+import { type ReactNode } from "react";
 import { Bell, Plus, Search } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 import { Card } from "@/components/ui/card";
 import { useTheme } from "@/theme";
@@ -9,12 +10,22 @@ type WatchlistHeaderProps = {
   title: string;
   searchPlaceholder: string;
   isDesktop: boolean;
+  searchValue: string;
+  onChangeSearch: (value: string) => void;
+  onPressAdd: () => void;
+  addOverlay?: ReactNode;
+  isAddOverlayOpen?: boolean;
 };
 
 export function WatchlistHeader({
   title,
   searchPlaceholder,
   isDesktop,
+  searchValue,
+  onChangeSearch,
+  onPressAdd,
+  addOverlay,
+  isAddOverlayOpen = false,
 }: WatchlistHeaderProps) {
   const { theme } = useTheme();
 
@@ -55,46 +66,81 @@ export function WatchlistHeader({
         </View>
       </View>
 
-      <Card style={{ padding: theme.spacing.sm, backgroundColor: withAlpha(theme.colors.surface, "F2") }}>
-        <View
-          style={{
-            alignItems: "center",
-            flexDirection: isDesktop ? "row" : "row",
-            gap: theme.spacing.sm,
-          }}
-        >
+      <View
+        style={{
+          position: "relative",
+          zIndex: isAddOverlayOpen ? 40 : 0,
+        }}
+      >
+        <Card style={{ padding: theme.spacing.sm, backgroundColor: withAlpha(theme.colors.surface, "F2") }}>
           <View
             style={{
               alignItems: "center",
-              backgroundColor: theme.colors.surfaceMuted,
-              borderRadius: theme.radius.pill,
-              flex: 1,
-              flexDirection: "row",
+              flexDirection: isDesktop ? "row" : "row",
               gap: theme.spacing.sm,
-              paddingHorizontal: theme.spacing.md,
-              paddingVertical: theme.spacing.sm,
             }}
           >
-            <Search color={theme.colors.textMuted} size={18} />
-            <Text style={{ color: theme.colors.textMuted, fontSize: theme.typography.bodySmall }}>
-              {searchPlaceholder}
-            </Text>
-          </View>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: theme.colors.surfaceMuted,
+                borderRadius: theme.radius.pill,
+                flex: 1,
+                flexDirection: "row",
+                gap: theme.spacing.sm,
+                paddingHorizontal: theme.spacing.md,
+                paddingVertical: theme.spacing.sm,
+              }}
+            >
+              <Search color={theme.colors.textMuted} size={18} />
+              <TextInput
+                accessibilityLabel="Search stocks"
+                onChangeText={onChangeSearch}
+                placeholder={searchPlaceholder}
+                placeholderTextColor={theme.colors.textMuted}
+                style={{
+                  color: theme.colors.textPrimary,
+                  flex: 1,
+                  fontSize: theme.typography.bodySmall,
+                  paddingVertical: 0,
+                }}
+                value={searchValue}
+              />
+            </View>
 
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Add stock"
+              onPress={onPressAdd}
+              style={{
+                alignItems: "center",
+                backgroundColor: theme.colors.primary,
+                borderRadius: theme.radius.pill,
+                height: 42,
+                justifyContent: "center",
+                width: 42,
+              }}
+            >
+              <Plus color="#FFFFFF" size={20} />
+            </Pressable>
+          </View>
+        </Card>
+
+        {addOverlay ? (
           <View
+            pointerEvents="box-none"
             style={{
-              alignItems: "center",
-              backgroundColor: theme.colors.primary,
-              borderRadius: theme.radius.pill,
-              height: 42,
-              justifyContent: "center",
-              width: 42,
+              left: 0,
+              position: "absolute",
+              right: 0,
+              top: 0,
+              zIndex: 50,
             }}
           >
-            <Plus color="#FFFFFF" size={20} />
+            {addOverlay}
           </View>
-        </View>
-      </Card>
+        ) : null}
+      </View>
     </View>
   );
 }
