@@ -16,6 +16,12 @@ const watchlistItemSchema = z.object({
   score: z.number().int().min(0).max(100),
 });
 
+const searchResultSchema = z.object({
+  ticker: z.string(),
+  name: z.string(),
+  logo: z.string(),
+});
+
 const watchlistMockSchema = z.object({
   title: z.string(),
   searchPlaceholder: z.string(),
@@ -31,6 +37,7 @@ const watchlistMockSchema = z.object({
   }),
   updatedAt: z.string(),
   items: z.array(watchlistItemSchema),
+  searchResults: z.array(searchResultSchema),
 });
 
 export type WatchlistMock = z.infer<typeof watchlistMockSchema>;
@@ -119,6 +126,28 @@ export const watchlistMock: WatchlistMock = watchlistMockSchema.parse({
       change: "+0.76%",
       changeDirection: "up",
       score: 71,
+    },
+  ],
+  searchResults: [
+    {
+      ticker: "GOOGL",
+      name: "Alphabet Inc.",
+      logo: "https://logo.clearbit.com/abc.xyz",
+    },
+    {
+      ticker: "AMD",
+      name: "Advanced Micro Devices",
+      logo: "https://logo.clearbit.com/amd.com",
+    },
+    {
+      ticker: "NFLX",
+      name: "Netflix, Inc.",
+      logo: "https://logo.clearbit.com/netflix.com",
+    },
+    {
+      ticker: "AVGO",
+      name: "Broadcom Inc.",
+      logo: "https://logo.clearbit.com/broadcom.com",
     },
   ],
 });
