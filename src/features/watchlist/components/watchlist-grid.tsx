@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useWindowDimensions, View } from "react-native";
 
 import { useTheme } from "@/theme";
@@ -10,19 +10,21 @@ import { MarketPulseCard } from "@/features/dashboard/components/market-pulse-ca
 import { AiSummaryCard } from "@/features/watchlist/components/ai-summary-card";
 import { AddStockModal } from "@/features/watchlist/components/add-stock-modal";
 import { WatchlistEmptyState } from "@/features/watchlist/components/watchlist-empty-state";
+import { useHomeStore } from "@/features/watchlist/store/home-store";
 
-type WatchlistGridProps = {
-  initialItems?: typeof watchlistMock.items;
-};
-
-export function WatchlistGrid({ initialItems = watchlistMock.items }: WatchlistGridProps) {
+export function WatchlistGrid() {
   const { width } = useWindowDimensions();
   const { theme } = useTheme();
   const isDesktop = width >= 960;
-  const [searchValue, setSearchValue] = useState("");
-  const [items, setItems] = useState(initialItems);
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [addSearchValue, setAddSearchValue] = useState("");
+  const items = useHomeStore((state) => state.items);
+  const searchValue = useHomeStore((state) => state.searchValue);
+  const addSearchValue = useHomeStore((state) => state.addSearchValue);
+  const isAddOpen = useHomeStore((state) => state.isAddOpen);
+  const setSearchValue = useHomeStore((state) => state.setSearchValue);
+  const setAddSearchValue = useHomeStore((state) => state.setAddSearchValue);
+  const openAdd = useHomeStore((state) => state.openAdd);
+  const closeAdd = useHomeStore((state) => state.closeAdd);
+  const addItemFromSearchResult = useHomeStore((state) => state.addItemFromSearchResult);
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = searchValue.trim().toLowerCase();
@@ -51,23 +53,6 @@ export function WatchlistGrid({ initialItems = watchlistMock.items }: WatchlistG
     [addSearchValue, items],
   );
 
-  function handleAdd(item: (typeof watchlistMock.searchResults)[number]) {
-    const generatedItem = {
-      ticker: item.ticker,
-      company: item.name,
-      signal: "BUY" as const,
-      confidenceLabel: "Constructive",
-      price: "000.00",
-      change: "+0.00%",
-      changeDirection: "neutral" as const,
-      score: 60,
-    };
-
-    setItems((currentItems) => [...currentItems, generatedItem]);
-    setAddSearchValue("");
-    setIsAddOpen(false);
-  }
-
   return (
     <View style={{ gap: theme.spacing.lg, position: "relative" }}>
       <View
@@ -82,7 +67,7 @@ export function WatchlistGrid({ initialItems = watchlistMock.items }: WatchlistG
           isDesktop={isDesktop}
           searchValue={searchValue}
           onChangeSearch={setSearchValue}
-          onPressAdd={() => setIsAddOpen(true)}
+          onPressAdd={openAdd}
           isAddOverlayOpen={isAddOpen}
           addOverlay={
             <AddStockModal
@@ -90,11 +75,8 @@ export function WatchlistGrid({ initialItems = watchlistMock.items }: WatchlistG
               open={isAddOpen}
               searchValue={addSearchValue}
               onChangeSearch={setAddSearchValue}
-              onClose={() => {
-                setAddSearchValue("");
-                setIsAddOpen(false);
-              }}
-              onAdd={handleAdd}
+              onClose={closeAdd}
+              onAdd={addItemFromSearchResult}
             />
           }
         />
@@ -111,7 +93,7 @@ export function WatchlistGrid({ initialItems = watchlistMock.items }: WatchlistG
             title="No watchlist items yet"
             description="Start building your Home view by adding a stock from the ticker search modal."
             ctaLabel="Open add stock"
-            onPressCta={() => setIsAddOpen(true)}
+            onPressCta={openAdd}
           />
         ) : filteredItems.length === 0 ? (
           <WatchlistEmptyState

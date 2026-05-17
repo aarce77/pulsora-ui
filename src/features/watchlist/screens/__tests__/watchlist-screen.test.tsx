@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 
 import { WatchlistScreen } from "@/features/watchlist/screens/watchlist-screen";
+import { appStorage } from "@/store/storage";
+import { HOME_STORE_STORAGE_KEY, useHomeStore } from "@/features/watchlist/store/home-store";
 import { ThemeProvider } from "@/theme";
 
 const mockPush = jest.fn();
@@ -15,6 +17,8 @@ jest.mock("expo-router", () => ({
 describe("WatchlistScreen", () => {
   beforeEach(() => {
     mockPush.mockClear();
+    appStorage.removeItem(HOME_STORE_STORAGE_KEY);
+    useHomeStore.getState().resetState();
   });
 
   it("renders the watchlist-first home shell without asset tabs", () => {
