@@ -16,7 +16,7 @@ export function AiSummaryCard({ summary }: AiSummaryCardProps) {
       <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.h3, fontWeight: "700" }}>
         {summary.title}
       </Text>
-      <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.bodySmall, marginTop: theme.spacing.sm }}>
+      <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.bodySmall, lineHeight: 21, marginTop: theme.spacing.sm }}>
         {summary.body}
       </Text>
     </Card>

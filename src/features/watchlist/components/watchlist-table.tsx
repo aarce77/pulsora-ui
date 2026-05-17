@@ -49,7 +49,7 @@ export function WatchlistTable({ items, updatedAt }: WatchlistTableProps) {
         </View>
       ))}
 
-      <Text style={{ color: theme.colors.textMuted, fontSize: theme.typography.caption, marginTop: theme.spacing.md }}>
+      <Text style={{ color: theme.colors.textMuted, fontSize: theme.typography.caption, marginTop: theme.spacing.sm }}>
         {updatedAt}
       </Text>
     </Card>

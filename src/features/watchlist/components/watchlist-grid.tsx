@@ -54,7 +54,12 @@ export function WatchlistGrid() {
   );
 
   return (
-    <View style={{ gap: theme.spacing.lg, position: "relative" }}>
+    <View
+      style={{
+        gap: width >= 960 ? theme.spacing.xl : theme.spacing.lg,
+        position: "relative",
+      }}
+    >
       <View
         style={{
           position: "relative",
@@ -114,7 +119,7 @@ export function WatchlistGrid() {
         }}
       >
         {isDesktop ? (
-          <View style={{ flexDirection: "row", gap: theme.spacing.md }}>
+          <View style={{ flexDirection: "row", gap: theme.spacing.lg }}>
             <View style={{ flex: 1 }}>
               <MarketPulseCard pulse={watchlistMock.marketPulse} />
             </View>

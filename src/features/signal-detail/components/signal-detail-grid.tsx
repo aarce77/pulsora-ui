@@ -50,7 +50,7 @@ export function SignalDetailGrid({
   const regime = toRegime(signal);
 
   return (
-    <View style={{ gap: theme.spacing.lg }}>
+    <View style={{ gap: isDesktop ? theme.spacing.xl : theme.spacing.lg }}>
       <SignalDetailHeader
         ticker={signal.ticker}
         company={meta.company}
@@ -71,6 +71,7 @@ export function SignalDetailGrid({
           style={{
             color: theme.colors.textSecondary,
             fontSize: theme.typography.body,
+            lineHeight: 24,
             marginTop: theme.spacing.sm,
           }}
         >

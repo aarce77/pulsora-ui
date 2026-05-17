@@ -36,8 +36,8 @@ export function SettingsScreen() {
         <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.h2, fontWeight: "700" }}>
           Settings
         </Text>
-        <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.body, marginTop: theme.spacing.sm }}>
-          Manage your theme preference and local session controls.
+        <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.body, lineHeight: 24, marginTop: theme.spacing.sm }}>
+          Manage local presentation preferences, notification behavior, and session controls.
         </Text>
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
           <Button label="Light" variant={preference === "light" ? "primary" : "secondary"} onPress={() => setPreference("light")} />

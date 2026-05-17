@@ -25,7 +25,7 @@ export function MarketPulseCard({ pulse }: MarketPulseCardProps) {
         {pulse.summary}
       </Text>
       <View style={{ marginTop: theme.spacing.lg, width: "100%" }}>
-        <Sparkline points={pulse.points.map((point) => point.value)} height={96} minWidth={220} />
+        <Sparkline points={pulse.points.map((point) => point.value)} height={104} minWidth={220} />
       </View>
     </Card>
   );
