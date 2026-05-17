@@ -81,14 +81,16 @@ export function SignalDetailHeader({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Back to Home"
+            accessibilityHint="Returns to the Home watchlist screen."
+            hitSlop={6}
             onPress={() => router.push("/home")}
             style={{
               alignItems: "center",
               backgroundColor: theme.colors.surfaceMuted,
               borderRadius: theme.radius.pill,
-              height: 40,
+              height: 44,
               justifyContent: "center",
-              width: 40,
+              width: 44,
             }}
           >
             <ArrowLeft color={theme.colors.textSecondary} size={18} />
@@ -98,15 +100,17 @@ export function SignalDetailHeader({
             accessibilityLabel={
               isSaved ? `Remove saved ${ticker} signal detail` : `Save ${ticker} signal detail`
             }
+            accessibilityHint="Toggles whether this ticker is saved to Home."
             accessibilityState={{ selected: isSaved }}
+            hitSlop={6}
             onPress={() => setIsSaved((currentValue) => !currentValue)}
             style={{
               alignItems: "center",
               backgroundColor: isSaved ? `${theme.colors.primary}22` : theme.colors.surfaceMuted,
               borderRadius: theme.radius.pill,
-              height: 40,
+              height: 44,
               justifyContent: "center",
-              width: 40,
+              width: 44,
             }}
           >
             <Bookmark
@@ -118,6 +122,8 @@ export function SignalDetailHeader({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={`Share ${ticker} signal detail`}
+            accessibilityHint="Opens the share sheet for this ticker detail."
+            hitSlop={6}
             onPress={() => {
               void handleShare();
             }}
@@ -125,9 +131,9 @@ export function SignalDetailHeader({
               alignItems: "center",
               backgroundColor: theme.colors.surfaceMuted,
               borderRadius: theme.radius.pill,
-              height: 40,
+              height: 44,
               justifyContent: "center",
-              width: 40,
+              width: 44,
             }}
           >
             <Share2 color={theme.colors.textSecondary} size={18} />

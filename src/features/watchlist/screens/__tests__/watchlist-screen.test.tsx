@@ -137,7 +137,7 @@ describe("WatchlistScreen", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.press(screen.getByLabelText("Open NVDA signal detail"));
+    fireEvent.press(screen.getByLabelText("Open NVDA signal detail for NVIDIA Corp."));
 
     expect(mockPush).toHaveBeenCalledWith("/home/NVDA");
   });

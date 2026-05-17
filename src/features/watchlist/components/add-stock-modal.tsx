@@ -54,14 +54,16 @@ export function AddStockModal({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Close add stock modal"
+            accessibilityHint="Closes the add stock overlay and returns to Home."
+            hitSlop={6}
             onPress={onClose}
             style={{
               alignItems: "center",
               backgroundColor: theme.colors.surfaceMuted,
               borderRadius: theme.radius.pill,
-              height: 40,
+              height: 44,
               justifyContent: "center",
-              width: 40,
+              width: 44,
             }}
           >
             <X color={theme.colors.textSecondary} size={18} />
@@ -83,6 +85,7 @@ export function AddStockModal({
           <Search color={theme.colors.textMuted} size={18} />
           <TextInput
             accessibilityLabel="Search ticker catalog"
+            accessibilityHint="Searches the local ticker catalog by symbol or company name."
             autoCapitalize="characters"
             onChangeText={onChangeSearch}
             placeholder="Search ticker or company..."
@@ -119,9 +122,12 @@ export function AddStockModal({
               <Pressable
                 key={item.ticker}
                 accessibilityRole="button"
+                accessibilityHint={`Adds ${item.name} to the Home watchlist.`}
                 accessibilityLabel={`Add ${item.ticker} to watchlist`}
+                hitSlop={6}
                 onPress={() => onAdd(item)}
                 style={({ pressed }) => ({
+                  minHeight: 44,
                   opacity: pressed ? 0.92 : 1,
                 })}
               >
@@ -138,6 +144,8 @@ export function AddStockModal({
                   }}
                 >
                   <Image
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
                     source={{ uri: item.logo }}
                     style={{
                       backgroundColor: withAlpha(theme.colors.primary, "18"),

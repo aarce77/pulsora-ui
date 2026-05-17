@@ -177,12 +177,14 @@ function PreferenceToggleRow({
       <Pressable
         accessibilityRole="switch"
         accessibilityLabel={`${enabled ? "Disable" : "Enable"} ${label}`}
+        accessibilityHint={description}
         accessibilityState={{ checked: enabled }}
+        hitSlop={6}
         onPress={onToggle}
         style={{
           backgroundColor: enabled ? theme.colors.primary : theme.colors.surfaceMuted,
           borderRadius: theme.radius.pill,
-          height: 32,
+          height: 36,
           justifyContent: "center",
           paddingHorizontal: 4,
           width: 58,
