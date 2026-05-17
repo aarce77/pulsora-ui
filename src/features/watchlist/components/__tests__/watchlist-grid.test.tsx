@@ -1,7 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 
+import { appStorage } from "@/store/storage";
 import { WatchlistGrid } from "@/features/watchlist/components/watchlist-grid";
+import { HOME_STORE_STORAGE_KEY, useHomeStore } from "@/features/watchlist/store/home-store";
 import { ThemeProvider } from "@/theme";
 
 jest.mock("expo-router", () => ({
@@ -11,13 +13,19 @@ jest.mock("expo-router", () => ({
 }));
 
 describe("WatchlistGrid", () => {
+  beforeEach(() => {
+    appStorage.removeItem(HOME_STORE_STORAGE_KEY);
+    useHomeStore.getState().resetState();
+  });
+
   it("renders the no-watchlist-items empty state when the local list is empty", () => {
     const queryClient = new QueryClient();
+    useHomeStore.getState().resetState([]);
 
     render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <WatchlistGrid initialItems={[]} />
+          <WatchlistGrid />
         </ThemeProvider>
       </QueryClientProvider>,
     );
@@ -27,11 +35,12 @@ describe("WatchlistGrid", () => {
 
   it("opens the add-stock modal from the empty-state CTA", () => {
     const queryClient = new QueryClient();
+    useHomeStore.getState().resetState([]);
 
     render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <WatchlistGrid initialItems={[]} />
+          <WatchlistGrid />
         </ThemeProvider>
       </QueryClientProvider>,
     );
@@ -43,11 +52,12 @@ describe("WatchlistGrid", () => {
 
   it("filters ticker-search results inside the add-stock modal", () => {
     const queryClient = new QueryClient();
+    useHomeStore.getState().resetState([]);
 
     render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <WatchlistGrid initialItems={[]} />
+          <WatchlistGrid />
         </ThemeProvider>
       </QueryClientProvider>,
     );

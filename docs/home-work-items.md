@@ -8,11 +8,13 @@
 - Add empty states for:
   - no matching stocks
   - no watchlist items
+Status: complete
 
 2. Local UI state and persistence
 - Move Home/watchlist state out of static mocks into a local feature store
 - Persist user watchlist edits locally
 - Keep static mock files as fixtures rather than active state
+Status: complete
 
 3. Signal detail polish
 - Replace remaining non-functional detail affordances
