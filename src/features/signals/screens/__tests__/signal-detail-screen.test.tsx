@@ -54,7 +54,7 @@ describe("SignalDetailScreen", () => {
     expect(screen.queryByText("Apple Inc.")).not.toBeOnTheScreen();
   });
 
-  it("navigates back to the signals tab from the header", () => {
+  it("navigates back to the home tab from the header", () => {
     const queryClient = new QueryClient();
 
     render(
@@ -65,8 +65,8 @@ describe("SignalDetailScreen", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.press(screen.getByLabelText("Back to Signals"));
+    fireEvent.press(screen.getByLabelText("Back to Home"));
 
-    expect(mockPush).toHaveBeenCalledWith("/signals");
+    expect(mockPush).toHaveBeenCalledWith("/home");
   });
 });

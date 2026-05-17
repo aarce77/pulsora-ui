@@ -1,80 +1,77 @@
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { ChevronRight } from "lucide-react-native";
+import { Pressable, Text, View } from "react-native";
 
-import { Card } from "@/components/ui/card";
 import { useTheme } from "@/theme";
 import { WatchlistMock } from "@/features/watchlist/data/watchlist-mock";
 import { getWatchlistToneColor } from "@/features/watchlist/utils/watchlist-colors";
 import { WatchlistScore } from "@/features/watchlist/components/watchlist-score";
+import { StatusPill } from "@/components/ui/status-pill";
 
 type WatchlistRowProps = {
   item: WatchlistMock["items"][number];
-  compact?: boolean;
 };
 
-export function WatchlistRow({ item, compact = false }: WatchlistRowProps) {
-  const { theme } = useTheme();
-  const changeColor = getWatchlistToneColor(theme, item.changeDirection);
-
-  if (compact) {
-    return (
-      <Card style={{ padding: theme.spacing.md }}>
-        <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between" }}>
-          <View style={{ flex: 1, gap: theme.spacing.xxs }}>
-            <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.body, fontWeight: "700" }}>
-              {item.ticker}
-            </Text>
-            <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.caption }}>
-              {item.company}
-            </Text>
-          </View>
-          <View style={{ alignItems: "flex-end", gap: theme.spacing.xxs }}>
-            <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.body, fontWeight: "700" }}>
-              {item.price}
-            </Text>
-            <Text style={{ color: changeColor, fontSize: theme.typography.caption, fontWeight: "700" }}>
-              {item.change}
-            </Text>
-          </View>
-          <View style={{ marginLeft: theme.spacing.md }}>
-            <WatchlistScore score={item.score} />
-          </View>
-        </View>
-      </Card>
-    );
+function getSignalTone(signal: "BUY" | "HOLD" | "SELL") {
+  if (signal === "BUY") {
+    return "success" as const;
   }
 
+  if (signal === "HOLD") {
+    return "warning" as const;
+  }
+
+  return "neutral" as const;
+}
+
+export function WatchlistRow({ item }: WatchlistRowProps) {
+  const { theme } = useTheme();
+  const router = useRouter();
+  const changeColor = getWatchlistToneColor(theme, item.changeDirection);
+
   return (
-    <View
-      style={{
-        alignItems: "center",
-        borderBottomColor: theme.colors.borderSubtle,
-        borderBottomWidth: 1,
-        flexDirection: "row",
-        gap: theme.spacing.md,
-        paddingVertical: theme.spacing.md,
-      }}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Open ${item.ticker} signal detail`}
+      onPress={() => router.push(`/home/${item.ticker}`)}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.92 : 1,
+      })}
     >
-      <View style={{ flex: 1.2, gap: theme.spacing.xxs }}>
-        <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.body, fontWeight: "700" }}>
-          {item.ticker}
-        </Text>
-        <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.caption }}>
-          {item.company}
-        </Text>
+      <View
+        style={{
+          alignItems: "center",
+          borderBottomColor: theme.colors.borderSubtle,
+          borderBottomWidth: 1,
+          flexDirection: "row",
+          gap: theme.spacing.md,
+          paddingVertical: theme.spacing.md,
+        }}
+      >
+        <View style={{ flex: 1.15, gap: theme.spacing.xxs }}>
+          <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.body, fontWeight: "700" }}>
+            {item.ticker}
+          </Text>
+          <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.caption }}>
+            {item.company}
+          </Text>
+        </View>
+        <View style={{ alignItems: "center", flex: 0.75 }}>
+          <StatusPill label={item.signal} tone={getSignalTone(item.signal)} />
+        </View>
+        <View style={{ alignItems: "center", flex: 0.7 }}>
+          <WatchlistScore score={item.score} />
+        </View>
+        <View style={{ alignItems: "flex-end", flex: 0.8 }}>
+          <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.bodySmall, fontWeight: "700" }}>
+            {item.price}
+          </Text>
+          <Text style={{ color: changeColor, fontSize: theme.typography.caption, fontWeight: "700" }}>
+            {item.change}
+          </Text>
+        </View>
+        <ChevronRight color={theme.colors.textMuted} size={16} />
       </View>
-      <View style={{ alignItems: "flex-end", flex: 0.8 }}>
-        <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.body, fontWeight: "700" }}>
-          {item.price}
-        </Text>
-      </View>
-      <View style={{ alignItems: "flex-end", flex: 0.7 }}>
-        <Text style={{ color: changeColor, fontSize: theme.typography.bodySmall, fontWeight: "700" }}>
-          {item.change}
-        </Text>
-      </View>
-      <View style={{ alignItems: "flex-end", flex: 0.5 }}>
-        <WatchlistScore score={item.score} />
-      </View>
-    </View>
+    </Pressable>
   );
 }

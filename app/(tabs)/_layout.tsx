@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { BarChart3, BrainCircuit, LayoutGrid, Signal, UserRound } from "lucide-react-native";
+import { House, Settings } from "lucide-react-native";
 
 import { TabBarIcon } from "@/components/layout/tab-bar-icon";
 import { useTheme } from "@/theme";
@@ -28,47 +28,20 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="dashboard"
+        name="home"
         options={{
-          title: "Dashboard",
+          title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} icon={LayoutGrid} />
+            <TabBarIcon color={color} focused={focused} icon={House} />
           ),
         }}
       />
       <Tabs.Screen
-        name="watchlist"
+        name="settings"
         options={{
-          title: "Watchlist",
+          title: "Settings",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} icon={BarChart3} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="signals"
-        options={{
-          title: "Signals",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} icon={Signal} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="intelligence"
-        options={{
-          title: "Intel",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} icon={BrainCircuit} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} icon={UserRound} />
+            <TabBarIcon color={color} focused={focused} icon={Settings} />
           ),
         }}
       />
