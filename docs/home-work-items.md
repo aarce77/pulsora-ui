@@ -30,6 +30,7 @@ Status: complete
 5. Settings expansion
 - Add more presentation-only preferences
 - Expand notifications and confidence-mode controls
+Status: complete
 
 6. Accessibility and navigation hardening
 - Audit touch targets and accessibility labels
