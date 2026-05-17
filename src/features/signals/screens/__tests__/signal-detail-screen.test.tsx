@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { Share } from "react-native";
 
 import { SignalDetailScreen } from "@/features/signals/screens/signal-detail-screen";
 import { ThemeProvider } from "@/theme";
@@ -15,8 +16,14 @@ jest.mock("expo-router", () => ({
 }));
 
 describe("SignalDetailScreen", () => {
+  const shareSpy = jest.spyOn(Share, "share").mockResolvedValue({
+    action: "sharedAction",
+    activityType: undefined,
+  });
+
   beforeEach(() => {
     mockPush.mockClear();
+    shareSpy.mockClear();
     mockUseLocalSearchParams.mockReturnValue({ ticker: "nvda" });
   });
 
@@ -52,6 +59,81 @@ describe("SignalDetailScreen", () => {
     expect(screen.getAllByText("MSFT").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Microsoft Corp.").length).toBeGreaterThan(0);
     expect(screen.queryByText("Apple Inc.")).not.toBeOnTheScreen();
+  });
+
+  it("renders added-search tickers with a company fallback instead of AAPL metadata", () => {
+    mockUseLocalSearchParams.mockReturnValue({ ticker: "googl" });
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getAllByText("GOOGL").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Alphabet Inc.").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Apple Inc.")).not.toBeOnTheScreen();
+  });
+
+  it("updates the selected timeframe and chart label locally", () => {
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByLabelText("NVDA 1M trend chart")).toBeOnTheScreen();
+
+    fireEvent.press(screen.getByLabelText("Select 1W timeframe"));
+
+    expect(screen.getByLabelText("NVDA 1W trend chart")).toBeOnTheScreen();
+  });
+
+  it("toggles the saved state from the bookmark action", () => {
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.press(screen.getByLabelText("Save NVDA signal detail"));
+
+    expect(screen.getByText("Saved to Home")).toBeOnTheScreen();
+    expect(screen.getByLabelText("Remove saved NVDA signal detail")).toBeOnTheScreen();
+  });
+
+  it("shares the current ticker detail from the header action", async () => {
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.press(screen.getByLabelText("Share NVDA signal detail"));
+
+    await waitFor(() =>
+      expect(shareSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: expect.stringContaining("NVDA"),
+          title: "NVDA signal detail",
+        }),
+      ),
+    );
   });
 
   it("navigates back to the home tab from the header", () => {

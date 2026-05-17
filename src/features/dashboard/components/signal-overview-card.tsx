@@ -1,5 +1,5 @@
 import { Apple } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { Card } from "@/components/ui/card";
 import { StatusPill } from "@/components/ui/status-pill";
@@ -11,9 +11,13 @@ import { getToneColor, withAlpha } from "@/features/dashboard/utils/dashboard-co
 
 type SignalOverviewCardProps = {
   signalSummary: DashboardMock["signalSummary"];
+  onSelectTimeframe?: (timeframe: string) => void;
 };
 
-export function SignalOverviewCard({ signalSummary }: SignalOverviewCardProps) {
+export function SignalOverviewCard({
+  signalSummary,
+  onSelectTimeframe,
+}: SignalOverviewCardProps) {
   const { theme } = useTheme();
 
   return (
@@ -109,8 +113,12 @@ export function SignalOverviewCard({ signalSummary }: SignalOverviewCardProps) {
         {signalSummary.timeframe.map((value) => {
           const isSelected = value === signalSummary.selectedTimeframe;
           return (
-            <View
+            <Pressable
               key={value}
+              accessibilityRole="button"
+              accessibilityLabel={`Select ${value} timeframe`}
+              accessibilityState={{ selected: isSelected }}
+              onPress={() => onSelectTimeframe?.(value)}
               style={{
                 backgroundColor: isSelected ? withAlpha(theme.colors.primary, "22") : theme.colors.surfaceMuted,
                 borderRadius: theme.radius.pill,
@@ -124,16 +132,25 @@ export function SignalOverviewCard({ signalSummary }: SignalOverviewCardProps) {
                   fontSize: theme.typography.caption,
                   fontWeight: "700",
                 }}
-              >
-                {value}
-              </Text>
-            </View>
+                >
+                  {value}
+                </Text>
+            </Pressable>
           );
         })}
       </View>
 
-      <View style={{ marginTop: theme.spacing.md, width: "100%" }}>
-        <Sparkline points={signalSummary.chart.map((point) => point.value)} height={92} minWidth={220} />
+      <View
+        accessible
+        accessibilityRole="image"
+        accessibilityLabel={`${signalSummary.ticker} ${signalSummary.selectedTimeframe} trend chart`}
+        style={{ marginTop: theme.spacing.md, width: "100%" }}
+      >
+        <Sparkline
+          points={signalSummary.chart.map((point) => point.value)}
+          height={92}
+          minWidth={220}
+        />
       </View>
     </Card>
   );

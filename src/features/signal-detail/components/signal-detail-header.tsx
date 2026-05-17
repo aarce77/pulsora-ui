@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useRouter } from "expo-router";
 import { ArrowLeft, Bookmark, Share2 } from "lucide-react-native";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Share, Text, View } from "react-native";
 
 import { StatusPill } from "@/components/ui/status-pill";
 import { useTheme } from "@/theme";
@@ -18,10 +19,18 @@ export function SignalDetailHeader({
 }: SignalDetailHeaderProps) {
   const { theme } = useTheme();
   const router = useRouter();
+  const [isSaved, setIsSaved] = useState(false);
+
+  async function handleShare() {
+    await Share.share({
+      message: `Pulsora signal detail for ${ticker} (${company})`,
+      title: `${ticker} signal detail`,
+    });
+  }
 
   return (
     <View style={{ gap: theme.spacing.md }}>
-      <StatusPill label="Phase 2" tone="success" />
+      <StatusPill label="Phase 3" tone="success" />
       <View
         style={{
           alignItems: "flex-start",
@@ -55,6 +64,17 @@ export function SignalDetailHeader({
           >
             {updatedAt}
           </Text>
+          {isSaved ? (
+            <Text
+              style={{
+                color: theme.colors.success,
+                fontSize: theme.typography.caption,
+                fontWeight: "600",
+              }}
+            >
+              Saved to Home
+            </Text>
+          ) : null}
         </View>
 
         <View style={{ flexDirection: "row", gap: theme.spacing.sm }}>
@@ -73,21 +93,45 @@ export function SignalDetailHeader({
           >
             <ArrowLeft color={theme.colors.textSecondary} size={18} />
           </Pressable>
-          {[Bookmark, Share2].map((Icon, index) => (
-            <View
-              key={index}
-              style={{
-                alignItems: "center",
-                backgroundColor: theme.colors.surfaceMuted,
-                borderRadius: theme.radius.pill,
-                height: 40,
-                justifyContent: "center",
-                width: 40,
-              }}
-            >
-              <Icon color={theme.colors.textSecondary} size={18} />
-            </View>
-          ))}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={
+              isSaved ? `Remove saved ${ticker} signal detail` : `Save ${ticker} signal detail`
+            }
+            accessibilityState={{ selected: isSaved }}
+            onPress={() => setIsSaved((currentValue) => !currentValue)}
+            style={{
+              alignItems: "center",
+              backgroundColor: isSaved ? `${theme.colors.primary}22` : theme.colors.surfaceMuted,
+              borderRadius: theme.radius.pill,
+              height: 40,
+              justifyContent: "center",
+              width: 40,
+            }}
+          >
+            <Bookmark
+              color={isSaved ? theme.colors.primary : theme.colors.textSecondary}
+              fill={isSaved ? `${theme.colors.primary}55` : "transparent"}
+              size={18}
+            />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Share ${ticker} signal detail`}
+            onPress={() => {
+              void handleShare();
+            }}
+            style={{
+              alignItems: "center",
+              backgroundColor: theme.colors.surfaceMuted,
+              borderRadius: theme.radius.pill,
+              height: 40,
+              justifyContent: "center",
+              width: 40,
+            }}
+          >
+            <Share2 color={theme.colors.textSecondary} size={18} />
+          </Pressable>
         </View>
       </View>
     </View>

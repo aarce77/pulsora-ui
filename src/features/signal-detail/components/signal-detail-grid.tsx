@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 
 import { SignalDetailsCard } from "@/features/dashboard/components/signal-details-card";
@@ -30,8 +31,20 @@ export function SignalDetailGrid({
   const isTablet = width >= 760;
 
   const { signal, meta } = getSignalDetailScenario(tickerOverride);
+  const [selectedTimeframe, setSelectedTimeframe] = useState(meta.selectedTimeframe);
 
-  const summary = toSignalSummary(signal, meta);
+  useEffect(() => {
+    setSelectedTimeframe(meta.selectedTimeframe);
+  }, [meta.selectedTimeframe, signal.ticker]);
+
+  const summary = useMemo(
+    () =>
+      toSignalSummary(signal, {
+        ...meta,
+        selectedTimeframe,
+      }),
+    [meta, selectedTimeframe, signal],
+  );
   const details = toSignalDetails(signal);
   const drivers = toDrivers(signal);
   const regime = toRegime(signal);
@@ -68,7 +81,12 @@ export function SignalDetailGrid({
       {isDesktop ? (
         <View style={{ flexDirection: "row", gap: theme.spacing.md }}>
           <View style={{ flex: 1.15, gap: theme.spacing.md }}>
-            <SignalOverviewCard signalSummary={summary} />
+            <SignalOverviewCard
+              signalSummary={summary}
+              onSelectTimeframe={(timeframe) =>
+                setSelectedTimeframe(timeframe as typeof meta.selectedTimeframe)
+              }
+            />
             <IndicatorContributionsCard signal={signal} />
           </View>
           <View style={{ flex: 0.95, gap: theme.spacing.md }}>
@@ -82,7 +100,12 @@ export function SignalDetailGrid({
         </View>
       ) : isTablet ? (
         <View style={{ gap: theme.spacing.md }}>
-          <SignalOverviewCard signalSummary={summary} />
+          <SignalOverviewCard
+            signalSummary={summary}
+            onSelectTimeframe={(timeframe) =>
+              setSelectedTimeframe(timeframe as typeof meta.selectedTimeframe)
+            }
+          />
           <View style={{ flexDirection: "row", gap: theme.spacing.md }}>
             <View style={{ flex: 1, gap: theme.spacing.md }}>
               <SignalDetailsCard signalDetails={details} />
@@ -97,7 +120,12 @@ export function SignalDetailGrid({
         </View>
       ) : (
         <View style={{ gap: theme.spacing.md }}>
-          <SignalOverviewCard signalSummary={summary} />
+          <SignalOverviewCard
+            signalSummary={summary}
+            onSelectTimeframe={(timeframe) =>
+              setSelectedTimeframe(timeframe as typeof meta.selectedTimeframe)
+            }
+          />
           <SignalDetailsCard signalDetails={details} />
           <DriversCard drivers={drivers} />
           <RiskFlagsCard flags={signal.risk_flags} />
