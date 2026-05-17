@@ -60,8 +60,8 @@ export function SignalDetailHeader({
         <View style={{ flexDirection: "row", gap: theme.spacing.sm }}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Back to Signals"
-            onPress={() => router.push("/signals")}
+            accessibilityLabel="Back to Home"
+            onPress={() => router.push("/home")}
             style={{
               alignItems: "center",
               backgroundColor: theme.colors.surfaceMuted,

@@ -3,7 +3,7 @@
 
 *React Native Frontend Implementation Reference for Development Team*
 
-Version 1.1 — April 2026
+Version 1.2 — May 2026
 
 > Naming convention:
 > Pulsora = product/UI brand
@@ -76,13 +76,12 @@ pulsora-ui/
 ├── app/
 │   ├── _layout.tsx
 │   ├── (tabs)/
-│   │   ├── dashboard.tsx
-│   │   ├── watchlist.tsx
-│   │   ├── intelligence.tsx
-│   │   ├── signals.tsx
-│   │   └── profile.tsx
-│   └── signal/
-│       └── [ticker].tsx
+│   │   ├── home/
+│   │   │   ├── _layout.tsx
+│   │   │   ├── index.tsx
+│   │   │   └── [ticker].tsx
+│   │   ├── index.tsx
+│   │   └── settings.tsx
 │
 ├── src/
 │   ├── api/
@@ -99,10 +98,8 @@ pulsora-ui/
 │   │   └── layout/
 │   │
 │   ├── features/
-│   │   ├── dashboard/
 │   │   ├── watchlist/
 │   │   ├── signal-detail/
-│   │   ├── intelligence/
 │   │   └── profile/
 │   │
 │   ├── theme/
@@ -196,12 +193,6 @@ GET /watchlist
 POST /watchlist
 ```
 
-## Sentiment
-
-```http
-GET /sentiment/{ticker}
-```
-
 ---
 
 # 9. API Layer
@@ -244,9 +235,8 @@ Use ONLY for:
 
 Use for:
 - watchlist
-- signals
-- sentiment
-- markets
+- signal detail
+- market context
 - server state
 
 Never duplicate server state inside Zustand.
@@ -335,22 +325,15 @@ Required reusable components:
 
 # 14. Mobile Screens
 
-## Dashboard
-Sections:
-- AI summary
-- market regime
-- top signals
-- sentiment pulse
-- watchlist preview
-- risk overview
-
-## Watchlist
+## Home
 Features:
 - search
-- filters
-- sort
 - add ticker
-- pull to refresh
+- market pulse
+- AI summary
+- stock-only watchlist rows
+- inline signal, confidence, score, and change data
+- ticker row navigation to signal detail
 
 ## Signal Detail
 Features:
@@ -364,14 +347,7 @@ Features:
 - regime state
 - forward guidance
 
-## Intelligence
-Features:
-- news
-- sentiment
-- event tags
-- market insights
-
-## Profile
+## Settings
 Features:
 - theme toggle
 - notifications
@@ -388,16 +364,13 @@ Use:
 - Native Stack
 
 Primary Tabs:
-- Dashboard
-- Watchlist
-- Intelligence
-- Signals
-- Profile
+- Home
+- Settings
 
 Signal detail route:
 
 ```txt
-/signal/[ticker]
+/(tabs)/home/[ticker]
 ```
 
 ---
@@ -477,12 +450,11 @@ Every screen must support:
 - API layer
 
 ## Phase 2
-- Dashboard
 - Watchlist
 - Signal Detail
 
 ## Phase 3
-- Intelligence
+- Watchlist-first navigation
 - charts
 - polish
 
@@ -504,7 +476,7 @@ Every screen must support:
 7. Create theme system
 8. Create reusable components
 9. Implement bottom tabs
-10. Implement dashboard
+10. Implement watchlist-first home screen
 11. Connect Markov Trader API
 12. Add authentication
 13. Implement signal detail screen
