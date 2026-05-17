@@ -21,9 +21,9 @@ export function WatchlistScore({ score }: WatchlistScoreProps) {
         borderColor: color,
         borderRadius: theme.radius.pill,
         borderWidth: 1,
-        height: 36,
+        height: 38,
         justifyContent: "center",
-        width: 36,
+        width: 38,
       }}
     >
       <Text style={{ color, fontSize: theme.typography.caption, fontWeight: "700" }}>

@@ -32,7 +32,7 @@ export function WatchlistHeader({
   return (
     <View style={{ gap: theme.spacing.md }}>
       <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ color: theme.colors.primary, fontSize: theme.typography.h2, fontWeight: "700" }}>
+        <Text style={{ color: theme.colors.primary, fontSize: theme.typography.h1, fontWeight: "700", letterSpacing: 0.4 }}>
           PULSORA
         </Text>
         <View style={{ alignItems: "center", flexDirection: "row", gap: theme.spacing.sm }}>
@@ -48,7 +48,7 @@ export function WatchlistHeader({
               width: 44,
             }}
           >
-            <Bell color={theme.colors.textSecondary} size={18} />
+              <Bell color={theme.colors.textSecondary} size={18} />
           </View>
         </View>
       </View>
@@ -65,6 +65,9 @@ export function WatchlistHeader({
           <Text style={{ color: theme.colors.textPrimary, fontSize: theme.typography.h1, fontWeight: "700" }}>
             {title}
           </Text>
+          <Text style={{ color: theme.colors.textSecondary, fontSize: theme.typography.bodySmall }}>
+            Track stock signals, conviction, and market context in one place.
+          </Text>
         </View>
       </View>
 
@@ -74,7 +77,7 @@ export function WatchlistHeader({
           zIndex: isAddOverlayOpen ? 40 : 0,
         }}
       >
-        <Card style={{ padding: theme.spacing.sm, backgroundColor: withAlpha(theme.colors.surface, "F2") }}>
+        <Card style={{ padding: theme.spacing.xs, backgroundColor: withAlpha(theme.colors.surface, "F2") }}>
           <View
             style={{
               alignItems: "center",
@@ -91,7 +94,7 @@ export function WatchlistHeader({
                 flexDirection: "row",
                 gap: theme.spacing.sm,
                 paddingHorizontal: theme.spacing.md,
-                paddingVertical: theme.spacing.sm,
+                paddingVertical: theme.spacing.md,
               }}
             >
               <Search color={theme.colors.textMuted} size={18} />

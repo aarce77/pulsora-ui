@@ -50,8 +50,8 @@ export function WatchlistRow({ item }: WatchlistRowProps) {
           borderBottomColor: theme.colors.borderSubtle,
           borderBottomWidth: 1,
           flexDirection: "row",
-          gap: theme.spacing.md,
-          paddingVertical: theme.spacing.md,
+          gap: theme.spacing.sm,
+          paddingVertical: theme.spacing.sm,
         }}
       >
         <View style={{ flex: 1.15, gap: theme.spacing.xxs }}>
@@ -76,7 +76,9 @@ export function WatchlistRow({ item }: WatchlistRowProps) {
             {item.change}
           </Text>
         </View>
-        <ChevronRight color={theme.colors.textMuted} size={16} />
+        <View style={{ marginLeft: theme.spacing.xs }}>
+          <ChevronRight color={theme.colors.textMuted} size={16} />
+        </View>
       </View>
     </Pressable>
   );
