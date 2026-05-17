@@ -32,9 +32,15 @@ export function WatchlistRow({ item }: WatchlistRowProps) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Open ${item.ticker} signal detail`}
+      accessibilityHint={`Opens the ${item.ticker} signal detail screen for ${item.company}.`}
+      accessibilityLabel={`Open ${item.ticker} signal detail for ${item.company}`}
+      accessibilityValue={{
+        text: `${item.signal} signal, score ${item.score}, move ${item.change}`,
+      }}
+      hitSlop={6}
       onPress={() => router.push(`/home/${item.ticker}`)}
       style={({ pressed }) => ({
+        minHeight: 44,
         opacity: pressed ? 0.92 : 1,
       })}
     >

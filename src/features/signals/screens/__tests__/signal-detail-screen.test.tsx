@@ -126,6 +126,23 @@ describe("SignalDetailScreen", () => {
     expect(screen.getByText("Ticker not found")).toBeOnTheScreen();
   });
 
+  it("navigates back to Home from the not-found signal-detail state", () => {
+    mockUseLocalSearchParams.mockReturnValue({ ticker: "xxxx" });
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SignalDetailScreen />
+        </ThemeProvider>
+      </QueryClientProvider>,
+    );
+
+    fireEvent.press(screen.getByLabelText("Back to Home"));
+
+    expect(mockPush).toHaveBeenCalledWith("/home");
+  });
+
   it("updates the selected timeframe and chart label locally", () => {
     const queryClient = new QueryClient();
 

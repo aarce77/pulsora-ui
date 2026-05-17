@@ -22,11 +22,13 @@ export function Button({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
+      hitSlop={6}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         {
           backgroundColor: isPrimary ? theme.colors.primary : theme.colors.surfaceMuted,
+          minHeight: 44,
           opacity: pressed ? 0.88 : 1,
           borderRadius: theme.radius.pill,
           paddingHorizontal: theme.spacing.md,

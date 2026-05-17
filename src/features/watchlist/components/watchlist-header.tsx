@@ -37,13 +37,15 @@ export function WatchlistHeader({
         </Text>
         <View style={{ alignItems: "center", flexDirection: "row", gap: theme.spacing.sm }}>
           <View
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
             style={{
               alignItems: "center",
               backgroundColor: withAlpha(theme.colors.surface, "F2"),
               borderRadius: theme.radius.pill,
-              height: 40,
+              height: 44,
               justifyContent: "center",
-              width: 40,
+              width: 44,
             }}
           >
             <Bell color={theme.colors.textSecondary} size={18} />
@@ -95,6 +97,7 @@ export function WatchlistHeader({
               <Search color={theme.colors.textMuted} size={18} />
               <TextInput
                 accessibilityLabel="Search stocks"
+                accessibilityHint="Filters the Home watchlist by ticker or company name."
                 onChangeText={onChangeSearch}
                 placeholder={searchPlaceholder}
                 placeholderTextColor={theme.colors.textMuted}
@@ -111,14 +114,16 @@ export function WatchlistHeader({
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Add stock"
+              accessibilityHint="Opens the ticker search overlay to add a stock to Home."
+              hitSlop={6}
               onPress={onPressAdd}
               style={{
                 alignItems: "center",
                 backgroundColor: theme.colors.primary,
                 borderRadius: theme.radius.pill,
-                height: 42,
+                height: 44,
                 justifyContent: "center",
-                width: 42,
+                width: 44,
               }}
             >
               <Plus color="#FFFFFF" size={20} />

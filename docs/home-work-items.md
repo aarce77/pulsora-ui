@@ -35,6 +35,7 @@ Status: complete
 6. Accessibility and navigation hardening
 - Audit touch targets and accessibility labels
 - Add more route-level interaction tests
+Status: complete
 
 7. Visual polish against the mockups
 - Tighten spacing, density, and typography
