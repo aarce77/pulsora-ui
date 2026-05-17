@@ -20,6 +20,7 @@ Status: complete
 - Replace remaining non-functional detail affordances
 - Make timeframe changes affect the displayed chart series locally
 - Add more realistic ticker scenarios to reduce template repetition
+Status: complete
 
 4. Loading, empty, and error UI
 - Add loading, error, retry, and not-found states for Home

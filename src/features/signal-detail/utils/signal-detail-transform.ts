@@ -16,6 +16,13 @@ type DashboardSignalSummary = {
   chart: { label: string; value: number }[];
 };
 
+type SignalSummaryMeta = Omit<
+  DashboardSignalSummary,
+  "ticker" | "signal" | "confidenceScore" | "chart"
+> & {
+  chartSeries: Record<string, { label: string; value: number }[]>;
+};
+
 type DashboardSignalDetails = {
   tabs: string[];
   activeTab: string;
@@ -50,13 +57,21 @@ type DashboardRegime = {
 
 export function toSignalSummary(
   signal: SignalResponse,
-  meta: Omit<DashboardSignalSummary, "ticker" | "signal" | "confidenceScore">,
+  meta: SignalSummaryMeta,
 ): DashboardSignalSummary {
+  const selectedTimeframe =
+    meta.timeframe.includes(meta.selectedTimeframe) ? meta.selectedTimeframe : meta.timeframe[0];
+
   return {
     ticker: signal.ticker,
+    company: meta.company,
     signal: signal.signal as "BUY" | "HOLD" | "SELL",
     confidenceScore: signal.confidence.score,
-    ...meta,
+    confidenceLabel: meta.confidenceLabel,
+    stats: meta.stats,
+    timeframe: meta.timeframe,
+    selectedTimeframe,
+    chart: meta.chartSeries[selectedTimeframe] ?? [],
   };
 }
 
